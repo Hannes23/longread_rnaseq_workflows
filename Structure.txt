@@ -1,0 +1,19 @@
+Nextflow/
+├── main.nf                 <-- The entry point
+├── nextflow.config         <-- Main configuration
+├── run_pipeline.pbs        <-- Job submission script
+├── conf/
+│   ├── base.config         <-- CPU/Memory definitions
+│   └── modules.config      <-- Arguments & output directories
+├── workflows/
+│   └── longread_rna.nf     <-- Pipeline logic (connecting the dots)
+└── modules/
+    └── local/              <-- Your tool definitions
+        ├── fastqc.nf
+        ├── fastplong.nf
+        ├── minimap2.nf
+        ├── transcriptclean.nf
+        ├── talon.nf
+        ├── sqanti3.nf
+        ├── salmon.nf
+        └── multiqc.nf
