@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: continuumio/miniconda3:latest
+
+%files
+    environment.yaml /opt/environment.yaml
+
+%post
+    echo "DEBUG: checking file"
+    ls -l /opt
+
+    conda env create -f /opt/environment.yaml
+    conda clean -a -y
+
+    echo "source /opt/conda/etc/profile.d/conda.sh" >> /environment
+    echo "conda activate flexiplex_env" >> /environment
+
+%environment
+    source /opt/conda/etc/profile.d/conda.sh
+    conda activate flexiplex_env

@@ -1,0 +1,48 @@
+#!/bin/bash
+#PBS -N Build_CONT
+#PBS -l walltime=02:00:00
+#PBS -l nodes=1:ppn=4
+#PBS -l mem=64gb
+#PBS -m abe
+#PBS -o ${VSC_DATA_VO_USER}/Nextflow/build_cont_stdout
+#PBS -e ${VSC_DATA_VO_USER}/Nextflow/build_cont_stderr
+
+set -euo pipefail
+
+echo "===== START BUILD ====="
+
+# Cache on scratch (GOOD)
+export APPTAINER_CACHEDIR="${VSC_SCRATCH_VO_USER}/apptainer_cache"
+export APPTAINER_TMPDIR="${VSC_SCRATCH_VO_USER}/apptainer_tmp"
+mkdir -p "$APPTAINER_CACHEDIR" "$APPTAINER_TMPDIR"
+
+# Build directory (NOT scratch → correct)
+BUILD_DIR="${VSC_DATA_VO_USER}/Nextflow/build"
+mkdir -p "$BUILD_DIR"
+cd "$BUILD_DIR"
+
+DEF_FILE="${VSC_DATA_VO_USER}/Nextflow/Flexiplex.def"
+SIF_FILE="${BUILD_DIR}/flexiplex_pigz.sif"
+SIF_FINAL="${VSC_SCRATCH_VO_USER}/apptainer_cache/flexiplex_pigz.sif"
+
+# ✅ Copy environment.yaml into build dir (NO subfolder!)
+echo "Copying environment.yaml..."
+cp ${VSC_DATA_VO_USER}/Nextflow/environment.yaml ${BUILD_DIR}/environment.yaml
+
+# Optional debug
+ls -lh ${BUILD_DIR}
+
+echo "Building container..."
+apptainer build --fakeroot --force "$SIF_FILE" "$DEF_FILE"
+
+# Safety check
+if [[ ! -f "$SIF_FILE" ]]; then
+    echo "ERROR: build failed"
+    exit 1
+fi
+
+echo "Moving container..."
+mv "$SIF_FILE" "$SIF_FINAL"
+
+echo "===== DONE ====="
+echo "Container at: $SIF_FINAL"

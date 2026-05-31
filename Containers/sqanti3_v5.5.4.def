@@ -1,0 +1,83 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%labels
+    Maintainer pabloati
+    Version v5.5.4
+    Software sqanti3
+
+%environment
+    export SQANTI3_VERSION="5.5.4"
+    # THE FIX: Removed the extra SQANTI3-5.5.4 subfolder from the PATH
+    export PATH="/conda/miniconda3/envs/sqanti3/bin:/conda/miniconda3/bin:/opt2/sqanti3/${SQANTI3_VERSION}:/opt2/sqanti3/${SQANTI3_VERSION}/src/utilities:$PATH"
+    export PYTHONWARNINGS="ignore::DeprecationWarning"
+
+%post
+    set -e
+
+    export DEBIAN_FRONTEND=noninteractive
+    export SQANTI3_VERSION="5.5.4"
+
+    # Fix APT issues on HPC
+    echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99sandbox
+    echo 'Dir::Log::Terminal "/dev/null";' > /etc/apt/apt.conf.d/99nolog
+
+    mkdir -p /opt2 /data2
+    cd /opt2
+
+    apt-get update
+
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        bedtools build-essential cmake cpanminus curl gawk gffread gmap \
+        gzip unzip kallisto libcurl4-openssl-dev libssl-dev libxml2-dev \
+        locales minimap2 perl pkg-config rna-star samtools seqtk wget zlib1g-dev
+
+    update-ca-certificates
+
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+    # Locale
+    localedef -i en_US -f UTF-8 en_US.UTF-8
+
+    # Perl deps
+    cpanm FindBin Term::ReadLine
+
+    # Download SQANTI3
+    mkdir -p /opt2/sqanti3/${SQANTI3_VERSION}
+    cd /opt2
+
+    # Download the correct version
+    wget https://github.com/ConesaLab/SQANTI3/releases/download/v${SQANTI3_VERSION}/SQANTI3_v${SQANTI3_VERSION}.zip
+
+    # Unzip directly to install directory
+    unzip SQANTI3_v${SQANTI3_VERSION}.zip -d /opt2/sqanti3/${SQANTI3_VERSION}
+    rm SQANTI3_v${SQANTI3_VERSION}.zip
+
+    # THE FIX: Just cd directly into the version folder; no renaming needed!
+    cd /opt2/sqanti3/${SQANTI3_VERSION}
+
+    # Install Miniconda
+    mkdir -p /conda/miniconda3
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    
+    # THE FIX: Added the -u flag right after -b
+    bash Miniconda3-latest-Linux-x86_64.sh -b -u -p /conda/miniconda3
+    
+    rm Miniconda3-latest-Linux-x86_64.sh
+
+    export PATH="/conda/miniconda3/bin:$PATH"
+
+    # Create SQANTI3 env
+    CI=true CONDA_PLUGINS_AUTO_ACCEPT_TOS=true conda env create -f SQANTI3.conda_env.yml
+    conda clean -a -y
+
+    chmod -R a+rX /opt2
+
+    # THE FIX: Updated symlinks to point directly to the files, removing the extra subfolder
+    ln -s /opt2/sqanti3/${SQANTI3_VERSION}/sqanti3_qc.py /usr/local/bin/sqanti3_qc.py
+    ln -s /opt2/sqanti3/${SQANTI3_VERSION}/sqanti3_filter.py /usr/local/bin/sqanti3_filter.py
+    ln -s /opt2/sqanti3/${SQANTI3_VERSION}/sqanti3_rescue.py /usr/local/bin/sqanti3_rescue.py
+    ln -s /opt2/sqanti3/${SQANTI3_VERSION}/sqanti3_reads.py /usr/local/bin/sqanti3_reads.py
+    ln -s /opt2/sqanti3/${SQANTI3_VERSION}/sqanti3 /usr/local/bin/sqanti3

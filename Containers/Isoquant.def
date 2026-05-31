@@ -1,0 +1,14 @@
+Bootstrap: docker
+From: condaforge/miniforge3:latest
+
+%labels
+    Maintainer pabloati
+    Version v3.12.2
+    Software IsoQuant
+
+%environment
+    export PATH="/opt/conda/bin:${PATH}"
+
+%post
+    mamba install -y -c conda-forge -c bioconda isoquant=3.12.2
+    mamba clean -a -y
