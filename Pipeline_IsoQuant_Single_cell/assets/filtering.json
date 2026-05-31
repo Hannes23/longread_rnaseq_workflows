@@ -1,0 +1,103 @@
+{
+    "full-splice_match": [
+        {
+            "diff_to_gene_TTS": [-50, 50]
+        },
+        {
+            "polyA_motif": ["AATAAA", "ATTAAA", "AGTAAA", "TATAAA", "GATAAA", "CATAAA", "AATATA", "AATACA", "AATAGA", "AAAAAG", "ACTAAA", "AAGAAA", "AATGAA", "TTTAAA", "AAAACA", "GGGGCT"]
+        },
+        {
+            "perc_A_downstream_TTS": [0, 59],
+            "max_run_A": [0, 5],
+            "roy_score": [0, 14]
+        }
+    ],
+    "incomplete-splice_match": [
+        {
+            "diff_to_gene_TTS": [-50, 50],
+            "RTS_stage": "FALSE",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "polyA_motif": ["AATAAA", "ATTAAA", "AGTAAA", "TATAAA", "GATAAA", "CATAAA", "AATATA", "AATACA", "AATAGA", "AAAAAG", "ACTAAA", "AAGAAA", "AATGAA", "TTTAAA", "AAAACA", "GGGGCT"],
+            "RTS_stage": "FALSE",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "perc_A_downstream_TTS": [0, 59],
+            "max_run_A": [0, 5],
+            "roy_score": [0, 14],
+            "RTS_stage": "FALSE",
+            "predicted_NMD": "FALSE"
+        }
+    ],
+    "novel_in_catalog": [
+        {
+            "diff_to_gene_TTS": [-50, 50],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "polyA_motif": ["AATAAA", "ATTAAA", "AGTAAA", "TATAAA", "GATAAA", "CATAAA", "AATATA", "AATACA", "AATAGA", "AAAAAG", "ACTAAA", "AAGAAA", "AATGAA", "TTTAAA", "AAAACA", "GGGGCT"],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "perc_A_downstream_TTS": [0, 59],
+            "max_run_A": [0, 5],
+            "roy_score": [0, 14],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        }
+    ],
+    "novel_not_in_catalog": [
+        {
+            "diff_to_gene_TTS": [-50, 50],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "polyA_motif": ["AATAAA", "ATTAAA", "AGTAAA", "TATAAA", "GATAAA", "CATAAA", "AATATA", "AATACA", "AATAGA", "AAAAAG", "ACTAAA", "AAGAAA", "AATGAA", "TTTAAA", "AAAACA", "GGGGCT"],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        },
+        {
+            "perc_A_downstream_TTS": [0, 59],
+            "max_run_A": [0, 5],
+            "roy_score": [0, 14],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE"
+        }
+    ],
+    "rest": [
+        {
+            "diff_to_gene_TTS": [-50, 50],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE",
+            "coding": "coding"
+        },
+        {
+            "polyA_motif": ["AATAAA", "ATTAAA", "AGTAAA", "TATAAA", "GATAAA", "CATAAA", "AATATA", "AATACA", "AATAGA", "AAAAAG", "ACTAAA", "AAGAAA", "AATGAA", "TTTAAA", "AAAACA", "GGGGCT"],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE",
+            "coding": "coding"
+        },
+        {
+            "perc_A_downstream_TTS": [0, 59],
+            "max_run_A": [0, 5],
+            "roy_score": [0, 14],
+            "RTS_stage": "FALSE",
+            "all_canonical": "canonical",
+            "predicted_NMD": "FALSE",
+            "coding": "coding"
+        }
+    ]
+}

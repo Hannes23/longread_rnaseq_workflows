@@ -1,0 +1,41 @@
+#!/bin/bash
+#PBS -l walltime=72:00:00
+#PBS -N NF_Master_Gleeson
+#PBS -m abe
+#PBS -l nodes=1:ppn=2,mem=12gb
+#PBS -o /data/gent/vo/000/gvo00082/vsc48905/Project/Preprocessing/Gleeson/Nextflow/Output/Nextflow.stdout
+#PBS -e /data/gent/vo/000/gvo00082/vsc48905/Project/Preprocessing/Gleeson/Nextflow/Output/Nextflow.stderr
+
+# ------------------------------------------------------------------
+# 1. LOAD MODULES
+# ------------------------------------------------------------------
+module purge
+module load Nextflow/25.10.2
+
+# ------------------------------------------------------------------
+# 2. PATHS
+# ------------------------------------------------------------------
+cd "${VSC_DATA_VO_USER}/Project/Preprocessing/Gleeson/Nextflow/Output"
+PROJECT_DIR="${VSC_DATA_VO_USER}/Nextflow/Pipeline_IsoQuant"
+
+export NXF_HOME="${VSC_DATA_VO_USER}/.nextflow"
+export NXF_WORK="${VSC_SCRATCH_VO_USER}/nextflow_work"
+export APPTAINER_CACHEDIR="${VSC_SCRATCH_VO_USER}/apptainer_cache"
+export APPTAINER_TMPDIR="${VSC_SCRATCH_VO_USER}/apptainer_tmp"
+
+mkdir -p $NXF_WORK $APPTAINER_CACHEDIR $APPTAINER_TMPDIR
+
+# ------------------------------------------------------------------
+# 3. RUN PIPELINE
+# ------------------------------------------------------------------
+nextflow run ${PROJECT_DIR}/main.nf \
+    -profile cluster \
+    --input "${VSC_DATA_VO_USER}/Project/Preprocessing/Gleeson/Nextflow/Input/Gleeson.csv" \
+    --outdir results \
+    --data_type nanopore \
+    --genome /data/gent/vo/000/gvo00082/vsc48905/Genomes/Genome/GRCh38.primary_assembly.genome.fa \
+    --gtf /data/gent/vo/000/gvo00082/vsc48905/Genomes/Genome/gencode.v49.annotation.gtf \
+    -resume \
+    -with-trace trace.txt \
+    -with-dag flowchart.png \
+    --provided_db /data/gent/vo/000/gvo00082/vsc48905/Isoquant_db/annotation.db
